@@ -1,8 +1,6 @@
-// Import React and D3
 import React, { Component } from "react";
 import * as d3 from "d3";
 
-// Main Dashboard Component
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +35,6 @@ class Dashboard extends Component {
     if (!svg.selectAll("circle").empty()) return; 
 
 
-    // Clear SVG for re-rendering
     svg.selectAll("*").remove();
 
     // Set up scales
@@ -96,7 +93,6 @@ class Dashboard extends Component {
       this.setState({selectedTweets: this.state.selectedTweets.filter(existingTweet => existingTweet !== tweet)})
     }
 
-    // Draw circles
     simulations.forEach(({ month, nodes }) => {
       svg
         .selectAll(`.circle-${month}`)
@@ -142,22 +138,21 @@ class Dashboard extends Component {
 
   const colorScale = colorMode === "Sentiment" ? sentimentColorScale : subjectivityColorScale;
 
-  // Legend parameters
-  const legendHeight = 150; // Total height of the legend
-  const legendWidth = 20; // Width of each rectangle
-  const numSections = 10; // Number of discrete sections
-  const sectionHeight = legendHeight / numSections; // Height of each section
+  const legendHeight = 150; 
+  const legendWidth = 20; 
+  const numSections = 10; 
+  const sectionHeight = legendHeight / numSections; 
 
-  // Compute value range for each section
+ 
   const valueRange =
     colorMode === "Sentiment"
-      ? d3.range(-1, 1.01, (2 / numSections)) // Sentiment: [-1, 1]
-      : d3.range(0, 1.01, (1 / numSections)); // Subjectivity: [0, 1]
+      ? d3.range(-1, 1.01, (2 / numSections)) 
+      : d3.range(0, 1.01, (1 / numSections)); 
 
-  // Create a group for the legend
+
   const legendGroup = svg.append("g").attr("class", "sectioned-legend").attr("transform", `translate(${width - 50}, ${height / 4})`);
 
-  // Add rectangles for each section
+
   valueRange.forEach((value, i) => {
     legendGroup
       .append("rect")
@@ -168,7 +163,7 @@ class Dashboard extends Component {
       .style("fill", colorScale(value));
   });
 
-  // Add labels for the top and bottom of the legend
+ 
   legendGroup
     .append("text")
     .attr("x", legendWidth + 5)
@@ -191,13 +186,13 @@ class Dashboard extends Component {
   updateColors = () => {
     const {  colorMode } = this.state;
     
-    // Define updated color scale
+  
     const sentimentColorScale = d3.scaleLinear().domain([-1, 0, 1]).range(["red", "#ECECEC", "green"]);
     const subjectivityColorScale = d3.scaleLinear().domain([0, 1]).range(["#ECECEC", "#4467C4"]);
     
     const colorScale = colorMode === "Sentiment" ? sentimentColorScale : subjectivityColorScale;
   
-    // Update fill colors of existing circles
+    
     const svg = d3.select(this.svgRef.current);
 
     d3.select(this.svgRef.current)
